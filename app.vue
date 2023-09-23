@@ -3,6 +3,21 @@
     <h1>Opportunity Cost Calculator</h1>
     <div class="row">
       <div class="column">
+        <p>
+        <label>
+          Website:
+          <!-- Replace all fields with a single select field -->
+          <select v-model="selectedWebsiteOption">
+            <option value="6000,40">MVP Website: $6,000, 2 Months</option>
+            <option value="20000,160">PMF Website: $20,000, 4 Months</option>
+            <option value="60000,480">GTM Website: 60,000, 6 Months</option>
+          </select>
+        </label>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
         <h2>Your Cost</h2>
         <label>
           Cost Type:
@@ -19,7 +34,7 @@
         </label>
         <br />
         <label>
-          Duration (in minutes):
+          Duration (in hours):
           <input type="number" v-model.number="yourDuration" />
         </label>
         <br />
@@ -27,26 +42,7 @@
       </div>
       <div class="column">
         <h2>Delegated Cost</h2>
-        <label>
-          Cost Type:
-          <select v-model="delegatedCostType">
-            <option value="hourly">Hourly Rate</option>
-            <option value="fixed">Fixed Cost</option>
-          </select>
-        </label>
-        <br />
-        <label>
-          <span v-if="delegatedCostType === 'hourly'">Hourly Rate:</span>
-          <span v-else>Fixed Cost:</span>
-          <input type="number" v-model.number="delegatedCost" />
-        </label>
-        <br />
-        <label>
-          Duration (in minutes):
-          <input type="number" v-model.number="delegatedDuration" />
-        </label>
-        <br />
-        <p>Opportunity Cost: {{ delegatedOpportunityCost }}</p>
+        <p>Opportunity Cost: {{ formatDelegatedOpportunityCost }}</p>
       </div>
     </div>
     <div class="row">
@@ -66,31 +62,26 @@ export default {
       yourCostType: "hourly",
       yourCost: 0,
       yourDuration: 0,
-      delegatedCostType: "hourly",
-      delegatedCost: 0,
-      delegatedDuration: 0,
+      selectedWebsiteOption: "6000,40", // Default to the small website option
     };
   },
   computed: {
     yourOpportunityCost() {
       if (this.yourCostType === "hourly") {
-        const hourlyRateInMinutes = this.yourCost / 60;
+        const hourlyRateInMinutes = this.yourCost;
         return (hourlyRateInMinutes * this.yourDuration).toFixed(2);
       } else {
         return this.yourCost.toFixed(2);
       }
     },
-    delegatedOpportunityCost() {
-      if (this.delegatedCostType === "hourly") {
-        const hourlyRateInMinutes = this.delegatedCost / 60;
-        return (hourlyRateInMinutes * this.delegatedDuration).toFixed(2);
-      } else {
-        return this.delegatedCost.toFixed(2);
-      }
+    formatDelegatedOpportunityCost() {
+      // Extract cost from the selectedWebsiteOption
+      const [cost] = this.selectedWebsiteOption.split(',');
+      return `$${parseFloat(cost).toLocaleString()}`;
     },
     opportunityCostComparison() {
       const yourCost = parseFloat(this.yourOpportunityCost);
-      const delegatedCost = parseFloat(this.delegatedOpportunityCost);
+      const delegatedCost = parseFloat(this.selectedWebsiteOption.split(',')[0]);
       if (yourCost < delegatedCost) {
         return (
           "You'll lose $" +
