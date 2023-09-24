@@ -23,8 +23,8 @@
           <label>
             Tech Ability Multiplier:
             <select v-model="techAbility">
-              <option value="2">No Design or Code Skills (2x)</option>
-              <option value="1.5">Some design and no-code skills (1.5x)</option>
+              <option value="2">No Design or Code Skills</option>
+              <option value="1.5">Some design and no-code skills</option>
             </select>
           </label>
         </p>
