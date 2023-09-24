@@ -1,55 +1,50 @@
 <template>
   <div>
-    <h1>Opportunity Cost Calculator</h1>
+    <h1>Opportunity Cost Calculator for Building a Web System</h1>
     <div class="row">
       <div class="column">
         <p>
-        <label>
-          Website:
-          <!-- Replace all fields with a single select field -->
-          <select v-model="selectedWebsiteOption">
-            <option value="6000,40">MVP Website: $6,000, 2 Months</option>
-            <option value="20000,160">PMF Website: $20,000, 4 Months</option>
-            <option value="60000,480">GTM Website: 60,000, 6 Months</option>
-          </select>
-        </label>
+          <label>
+            Your Hourly Rate:
+            <input type="text" v-model.number="yourRate" />
+          </label>
+          <label>
+            Hours a day you would spend building this yourself:
+            <input type="text" v-model.number="hoursDaily" />
+          </label>
+          <label>
+            Growth Stage:
+            <select v-model="selectedWebsiteOption">
+              <option value="6000,40">MVP Web System: $6,000, 2 Months</option>
+              <option value="20000,160">PMF Web System: $20,000, 4 Months</option>
+              <option value="60000,480">GTM Web System: $60,000, 6 Months</option>
+            </select>
+          </label>
+          <label>
+            Tech Ability Multiplier:
+            <select v-model="techAbility">
+              <option value="2">No Design or Code Skills (2x)</option>
+              <option value="1.5">Some design and no-code skills (1.5x)</option>
+            </select>
+          </label>
         </p>
       </div>
     </div>
     <div class="row">
       <div class="column">
         <h2>Your Cost</h2>
-        <label>
-          Cost Type:
-          <select v-model="yourCostType">
-            <option value="hourly">Hourly Rate</option>
-            <option value="fixed">Fixed Cost</option>
-          </select>
-        </label>
-        <br />
-        <label>
-          <span v-if="yourCostType === 'hourly'">Hourly Rate:</span>
-          <span v-else>Fixed Cost:</span>
-          <input type="number" v-model.number="yourCost" />
-        </label>
-        <br />
-        <label>
-          Duration (in hours):
-          <input type="number" v-model.number="yourDuration" />
-        </label>
-        <br />
-        <p>Opportunity Cost: {{ yourOpportunityCost }}</p>
+        <p>Opportunity Cost: ${{ yourOpportunityCost.toFixed(2) }}</p>
       </div>
       <div class="column">
         <h2>Delegated Cost</h2>
-        <p>Opportunity Cost: {{ formatDelegatedOpportunityCost }}</p>
+        <p>Actual Gain: ${{ delegatedCost.toFixed(2) }}</p>
       </div>
     </div>
     <div class="row">
       <div class="column">
-        <p>
+        <strong>
           {{ opportunityCostComparison }}
-        </p>
+        </strong>
       </div>
     </div>
   </div>
@@ -59,44 +54,38 @@
 export default {
   data() {
     return {
-      yourCostType: "hourly",
-      yourCost: 0,
-      yourDuration: 0,
-      selectedWebsiteOption: "6000,40", // Default to the small website option
+      yourRate: 0,
+      hoursDaily: 0,
+      hourlyCapacity: 0,
+      selectedWebsiteOption: "0", // Default to an option with a value of 0
+      techAbility: 2, // Default to the 2x multiplier
     };
   },
   computed: {
-    yourOpportunityCost() {
-      if (this.yourCostType === "hourly") {
-        const hourlyRateInMinutes = this.yourCost;
-        return (hourlyRateInMinutes * this.yourDuration).toFixed(2);
-      } else {
-        return this.yourCost.toFixed(2);
-      }
+    fieldsFilled() {
+      // Check if any of the fields are non-zero
+      return this.yourRate > 0 || this.hoursDaily > 0 || parseFloat(this.selectedWebsiteOption) > 0;
     },
-    formatDelegatedOpportunityCost() {
-      // Extract cost from the selectedWebsiteOption
-      const [cost] = this.selectedWebsiteOption.split(',');
-      return `$${parseFloat(cost).toLocaleString()}`;
+    yourOpportunityCost() {
+      const techMultiplier = parseFloat(this.techAbility);
+      const yourDaysToLaunch = (parseFloat(this.selectedWebsiteOption.split(',')[1]) / 30) * techMultiplier;
+      const yourCost = (this.yourRate * this.hoursDaily * yourDaysToLaunch).toFixed(2);
+      const delegatedCost = (parseFloat(this.selectedWebsiteOption.split(',')[0])).toFixed(2);
+      return parseFloat(yourCost);
+    },
+    delegatedCost() {
+      return parseFloat(this.selectedWebsiteOption.split(',')[0]);
     },
     opportunityCostComparison() {
-      const yourCost = parseFloat(this.yourOpportunityCost);
-      const delegatedCost = parseFloat(this.selectedWebsiteOption.split(',')[0]);
-      if (yourCost < delegatedCost) {
-        return (
-          "You'll lose $" +
-          (delegatedCost - yourCost).toFixed(2) +
-          " by delegating this task."
-        );
-      } else if (yourCost > delegatedCost) {
-        return (
-          "You'll save $" +
-          (yourCost - delegatedCost).toFixed(2) +
-          " by delegating this task."
-        );
-      } else {
-        return "There's no opportunity cost difference between delegating and doing the task yourself.";
+      if (!this.fieldsFilled) {
+        return "Add some data to get started.";
       }
+      const potentialGain = this.yourOpportunityCost - this.delegatedCost;
+      const actualGain = parseFloat(this.selectedWebsiteOption.split(',')[0]);
+      const gainMultiplier = (potentialGain / actualGain).toFixed(2);
+      const gainText = potentialGain > 0 ? "saved" : "lost";
+      
+      return `You ${gainText} $${Math.abs(potentialGain).toFixed(2)} and experienced a ${gainMultiplier}x gain/loss.`;
     },
   },
 };
