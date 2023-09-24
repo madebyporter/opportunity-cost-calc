@@ -15,9 +15,9 @@
           <label>
             Web System at what Growth Stage, based on my costs and timeline:
             <select v-model="selectedWebsiteOption">
-              <option value="6000,40">MVP Web System: $6,000, 2 Months</option>
-              <option value="20000,160">PMF Web System: $20,000, 4 Months</option>
-              <option value="60000,480">GTM Web System: $60,000, 6 Months</option>
+              <option value="6000,60">MVP Web System: $6,000, 1-2 Months</option>
+              <option value="35000,200">PMF Web System: $35,000, 3-4 Months</option>
+              <option value="100000,600">GTM Web System: $100,000, 5-6 Months</option>
             </select>
           </label>
           <label>
