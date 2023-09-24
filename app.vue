@@ -5,15 +5,15 @@
       <div class="column">
         <p>
           <label>
-            Your Hourly Rate:
-            <input type="text" v-model.number="yourRate" />
+            Your Last Year's Revenue:
+            <input type="text" v-model.number="lastYearsRevenue" />
           </label>
           <label>
-            Hours a day you would spend building this yourself:
+            Hours a day you would spend doing it yourself:
             <input type="text" v-model.number="hoursDaily" />
           </label>
           <label>
-            Growth Stage:
+            Web System at what Growth Stage, based on my costs and timeline:
             <select v-model="selectedWebsiteOption">
               <option value="6000,40">MVP Web System: $6,000, 2 Months</option>
               <option value="20000,160">PMF Web System: $20,000, 4 Months</option>
@@ -32,12 +32,12 @@
     </div>
     <div class="row">
       <div class="column">
-        <h2>Your Cost</h2>
-        <p>Opportunity Cost: ${{ yourOpportunityCost.toFixed(2) }}</p>
+        <h2>If you built this</h2>
+        <p>Cost for YOU to build: ${{ yourOpportunityCost.toFixed(2) }}</p>
       </div>
       <div class="column">
-        <h2>Delegated Cost</h2>
-        <p>Actual Gain: ${{ delegatedCost.toFixed(2) }}</p>
+        <h2>If Porter built this</h2>
+        <p>Cost for Porter to Build: ${{ delegatedCost.toFixed(2) }}</p>
       </div>
     </div>
     <div class="row">
@@ -54,22 +54,22 @@
 export default {
   data() {
     return {
-      yourRate: 0,
+      lastYearsRevenue: 0,
       hoursDaily: 0,
       hourlyCapacity: 0,
-      selectedWebsiteOption: "0", // Default to an option with a value of 0
+      selectedWebsiteOption: "6000,40", // Default to an option with a value of 0
       techAbility: 2, // Default to the 2x multiplier
     };
   },
   computed: {
     fieldsFilled() {
       // Check if any of the fields are non-zero
-      return this.yourRate > 0 || this.hoursDaily > 0 || parseFloat(this.selectedWebsiteOption) > 0;
+      return this.lastYearsRevenue > 0 || this.hoursDaily > 0 || parseFloat(this.selectedWebsiteOption) > 0;
     },
     yourOpportunityCost() {
       const techMultiplier = parseFloat(this.techAbility);
       const yourDaysToLaunch = (parseFloat(this.selectedWebsiteOption.split(',')[1]) / 30) * techMultiplier;
-      const yourCost = (this.yourRate * this.hoursDaily * yourDaysToLaunch).toFixed(2);
+      const yourCost = ((this.lastYearsRevenue / 12 / 4 / 5 / 8) * this.hoursDaily * yourDaysToLaunch).toFixed(2);
       const delegatedCost = (parseFloat(this.selectedWebsiteOption.split(',')[0])).toFixed(2);
       return parseFloat(yourCost);
     },
