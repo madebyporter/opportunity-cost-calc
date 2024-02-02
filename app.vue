@@ -41,7 +41,7 @@
           <input type="number" v-model.number="delegatedCost" />
         </label>
         <br />
-        <label>
+        <label v-if="delegatedCostType === 'hourly'">
           Duration (in minutes):
           <input type="number" v-model.number="delegatedDuration" />
         </label>
