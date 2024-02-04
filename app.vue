@@ -6,7 +6,7 @@
     </div>
     <div id="middlediv" class="grid lg:grid-cols-2 gap-2.5 grow">
       <div class="col-span-1 bg-white rounded-lg flex flex-col">
-        <div class="border-b border-neutral-300 px-10 py-5 lg:p-10 flex flex-col md:flex-row gap-2 lg:gap-4 justify-between items-center lg:items-end grow">
+        <div class="border-b border-neutral-300 px-10 py-5 lg:p-10 flex flex-col md:flex-row gap-2 lg:gap-4 justify-between items-center md:items-end grow">
           <h2 class="text-3xl lg:text-5xl font-medium tracking-tight">Your Cost</h2>
           <span class="text-lg lg:text-4xl font-medium tracking-tight">${{ yourOpportunityCost }}</span>
         </div>
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="col-span-1 bg-white rounded-lg flex flex-col">
-        <div class="border-b border-neutral-300 px-10 py-5 lg:p-10 flex flex-col md:flex-row gap-2 lg:gap-4 justify-between items-center lg:items-end grow">
+        <div class="border-b border-neutral-300 px-10 py-5 lg:p-10 flex flex-col md:flex-row gap-2 lg:gap-4 justify-between items-center md:items-end grow">
           <h2 class="text-3xl lg:text-5xl font-medium tracking-tight">Delegated Cost</h2>
           <span class="text-lg lg:text-4xl font-medium tracking-tight">${{ delegatedOpportunityCost }}</span>
         </div>

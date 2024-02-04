@@ -1544,6 +1544,10 @@ input[type="number"] {
     flex-direction: row;
   }
 
+  .md\:items-end {
+    align-items: flex-end;
+  }
+
   .md\:items-center {
     align-items: center;
   }
@@ -1561,6 +1565,10 @@ input[type="number"] {
   .lg\:min-w-fit {
     min-width: -moz-fit-content;
     min-width: fit-content;
+  }
+
+  .lg\:grow {
+    flex-grow: 1;
   }
 
   .lg\:grid-cols-2 {
@@ -1592,6 +1600,12 @@ input[type="number"] {
   .lg\:text-5xl {
     font-size: 3rem;
     line-height: 1;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:p-10 {
+    padding: 2.5rem;
   }
 }
 
