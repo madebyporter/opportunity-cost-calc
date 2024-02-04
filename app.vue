@@ -121,7 +121,10 @@
     const yourCostNum = parseFloat(yourOpportunityCost.value);
     const delegatedCostNum = parseFloat(delegatedOpportunityCost.value);
 
-    if ((isNaN(delegatedCostNum) || delegatedCostNum <= 0) && window.innerWidth < 420) {
+    // Safely checking if window is defined before accessing innerWidth
+    const isNarrowScreen = typeof window !== 'undefined' && window.innerWidth < 420;
+
+    if ((isNaN(delegatedCostNum) || delegatedCostNum <= 0) && isNarrowScreen) {
       return "Please scroll down and fill out the delegated cost to see the comparison.";
     } else if (isNaN(delegatedCostNum) || delegatedCostNum <= 0) {
       return "Please fill out the delegated cost fields to see the comparison.";
@@ -133,6 +136,7 @@
       return "There's no opportunity cost difference between delegating and doing the task yourself.";
     }
   });
+
 
   
   onMounted(() => {
