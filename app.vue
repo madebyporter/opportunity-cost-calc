@@ -129,9 +129,9 @@
     } else if (isNaN(delegatedCostNum) || delegatedCostNum <= 0) {
       return "Please fill out the delegated cost fields to see the comparison.";
     } else if (yourCostNum < delegatedCostNum) {
-      return `You'll lose $${(delegatedCostNum - yourCostNum).toFixed(2)} by delegating this task.`;
+      return `You'll <span class="text-red-400 font-bold">lose $${(delegatedCostNum - yourCostNum).toFixed(2)}</span> by delegating this task.`;
     } else if (yourCostNum > delegatedCostNum) {
-      return `You'll save $${(yourCostNum - delegatedCostNum).toFixed(2)} by delegating this task.`;
+      return `You'll <span class="text-green-400 font-bold">save $${(yourCostNum - delegatedCostNum).toFixed(2)}</span> by delegating this task.`;
     } else {
       return "There's no opportunity cost difference between delegating and doing the task yourself.";
     }
