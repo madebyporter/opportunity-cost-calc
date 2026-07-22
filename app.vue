@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
+  import { ref, computed } from 'vue';
   import { useHead } from '#imports';
 
   useHead({
@@ -91,6 +91,15 @@
       lang: 'en'
     }
   });
+
+  function toNumber(value: unknown): number {
+    const num = Number(value);
+    return Number.isFinite(num) ? num : 0;
+  }
+
+  function formatCost(value: unknown): string {
+    return toNumber(value).toFixed(2);
+  }
 
   const yourCostType = ref("hourly");
   const yourCost = ref(0);
@@ -101,19 +110,19 @@
 
   const yourOpportunityCost = computed(() => {
     if (yourCostType.value === "hourly") {
-      const hourlyRateInMinutes = yourCost.value / 60;
-      return (hourlyRateInMinutes * yourDuration.value).toFixed(2);
+      const hourlyRateInMinutes = toNumber(yourCost.value) / 60;
+      return formatCost(hourlyRateInMinutes * toNumber(yourDuration.value));
     } else {
-      return yourCost.value.toFixed(2);
+      return formatCost(yourCost.value);
     }
   });
 
   const delegatedOpportunityCost = computed(() => {
     if (delegatedCostType.value === "hourly") {
-      const hourlyRateInMinutes = delegatedCost.value / 60;
-      return (hourlyRateInMinutes * delegatedDuration.value).toFixed(2);
+      const hourlyRateInMinutes = toNumber(delegatedCost.value) / 60;
+      return formatCost(hourlyRateInMinutes * toNumber(delegatedDuration.value));
     } else {
-      return delegatedCost.value.toFixed(2);
+      return formatCost(delegatedCost.value);
     }
   });
 
@@ -135,31 +144,6 @@
     } else {
       return "There's no opportunity cost difference between delegating and doing the task yourself.";
     }
-  });
-
-
-  
-  onMounted(() => {
-    watch(delegatedCost, (newVal, oldVal) => {
-      if (newVal === 0 || newVal === "0") {
-        // Handle the default zero value
-        const parsedDelegatedCost = 0;
-        // Use the parsedDelegatedCost for further calculations
-        // For example:
-        const delegatedOpportunityCost = parsedDelegatedCost.toFixed(2);
-      } else {
-        const parsedDelegatedCost = parseFloat(newVal);
-        if (!isNaN(parsedDelegatedCost)) {
-          // Use the parsedDelegatedCost for further calculations
-          // For example:
-          const delegatedOpportunityCost = parsedDelegatedCost.toFixed(2);
-        } else {
-          // Handle the case where delegatedCost is not a valid number
-          // For example, display an error message to the user
-          console.error('Invalid delegated cost input');
-        }
-      }
-    });
   });
 
 </script>
