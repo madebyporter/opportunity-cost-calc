@@ -1,5 +1,8 @@
 {
   "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "build": "nuxt build",
     "tailwind:watch": "tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --watch",
